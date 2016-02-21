@@ -1,6 +1,6 @@
 # Laasti/valitron-provider
 
-A league/container service provider for vlucas/valitron.
+A league/container v2 service provider for vlucas/valitron.
 
 ## Installation
 
@@ -13,12 +13,14 @@ composer require laasti/valitron-provider
 ```php
 
 $container = new League\Container\Container;
-$container->add('config.validation', [
-    'locale' => 'fr',//if not specified, attempts to use config.locale in the container, defaults to en,
-    'locales_dir' => __DIR__,//defaults, to valitrons language files directory
-    //Additional rules to add to Valitron, any php callbacks are accepted
-    'rules' => [
-        ['my_rule', 'my_callback', 'My message']
+$container->add('config', [
+    'valitron' =>[
+        'locale' => 'fr',//if not specified, attempts to use config.locale in the container, defaults to en,
+        'locales_dir' => __DIR__,//defaults, to Valitron's language files directory
+        //Additional rules to add to Valitron, any php callbacks are accepted
+        'rules' => [
+            ['my_rule', 'my_callback', 'My message']
+        ]
     ]
 ]);
 $container->addServiceProvider('Laasti\ValitronProvider\ValitronProvider');

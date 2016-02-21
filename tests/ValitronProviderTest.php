@@ -11,18 +11,19 @@ class ValitronProviderTest extends \PHPUnit_Framework_TestCase
     public function testConfiguration()
     {
         $called = false;
-        $container = new Container(['di' => [
-                'config.validation' => [
-                    'locale' => 'fr',
-                    'locales_dir' => __DIR__.'/langs',
-                    'rules' => [
-                        ['custom', function() use (&$called) {
-                            $called = true;
-                            return true;
-                        }, 'Everything you do is wrong. You fail.']
-                    ]
+        $container = new Container();
+        $container->add('config', [
+            'valitron' => [
+                'locale' => 'fr',
+                'locales_dir' => __DIR__.'/langs',
+                'rules' => [
+                    ['custom', function() use (&$called) {
+                        $called = true;
+                        return true;
+                    }, 'Everything you do is wrong. You fail.']
                 ]
             ]
+
         ]);
         $container->addServiceProvider(new ValitronProvider);
         $validator = $container->get('Valitron\Validator', [['test' => 'data']]);

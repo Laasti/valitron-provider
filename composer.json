@@ -1,6 +1,6 @@
 {
     "name": "laasti/valitron-provider",
-    "description": "A league/container service provider for vlucas/valitron.",
+    "description": "A league/container v2 service provider for vlucas/valitron.",
     "license": "MIT",
     "authors": [
         {
@@ -10,8 +10,8 @@
     ],
     "require": {
         "php": ">=5.4.0",
-		"vlucas/valitron": "~1.0",
-        "league/container": "~1.3"
+        "vlucas/valitron": "~1.0",
+        "league/container": "~2.0.3"
     },
     "suggest": {
     },

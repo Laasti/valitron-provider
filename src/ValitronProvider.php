@@ -1,11 +1,11 @@
 <?php
 
+namespace Laasti\ValitronProvider;
+
 use League\Container\ServiceProvider;
 use Valitron\Validator;
 
-namespace Laasti\ValitronProvider;
-
-class ValitronProvider extends ServiceProvider
+class ValitronProvider extends ServiceProvider\AbstractServiceProvider
 {
 
     protected $provides = [
@@ -21,17 +21,13 @@ class ValitronProvider extends ServiceProvider
     public function register()
     {
         $di = $this->getContainer();
-        $config = array_merge($this->defaultConfig, $di['config.validation']);
+        $config = $this->getConfig();
 
         if (!is_null($config['locales_dir'])) {
             Validator::langDir($config['locales_dir']);
         }
-
-        $system_lang = !empty($di['config.locale']) ? $di['config.locale'] : 'en';
-        $lang = isset($config['locale']) ? $config['locale'] : $system_lang;
-
-        Validator::lang($lang);
-
+        Validator::lang($config['locale']);
+        
         foreach ($config['rules'] as $rule) {
             call_user_func_array('Valitron\Validator::addRule', $rule);
         }
@@ -39,6 +35,19 @@ class ValitronProvider extends ServiceProvider
         $di->add('Valitron\Validator', function($data, $fields = [], $lang = null, $langDir = null) {
             return new Validator($data, $fields, $lang, $langDir);
         });
+    }
+
+    protected function getConfig()
+    {
+        $di = $this->getContainer();
+        if ($di->has('config') && isset($di->get('config')['valitron'])) {
+            $config = $di->get('config')['valitron'];
+            if (!isset($config['locale']) && isset($di->get('config')['locale'])) {
+                $config['locale'] = $di->get('config')['locale'];
+            }
+            return $config+$this->defaultConfig;
+        }
+        return $this->defaultConfig;
     }
 
 }
