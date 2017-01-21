@@ -11,5 +11,4 @@ trait ValitronFactoryTrait
     {
         return new Validator($data, $fields, $lang, $langDir);
     }
-
 }

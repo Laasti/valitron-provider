@@ -11,7 +11,7 @@ class ValitronProvider extends ServiceProvider\AbstractServiceProvider
     protected $provides = [
         'Valitron\Validator'
     ];
-    
+
     protected $defaultConfig = [
         'locale' => null,
         'locales_dir' => null,
@@ -27,12 +27,12 @@ class ValitronProvider extends ServiceProvider\AbstractServiceProvider
             Validator::langDir($config['locales_dir']);
         }
         Validator::lang($config['locale']);
-        
+
         foreach ($config['rules'] as $rule) {
             call_user_func_array('Valitron\Validator::addRule', $rule);
         }
 
-        $di->add('Valitron\Validator', function($data, $fields = [], $lang = null, $langDir = null) {
+        $di->add('Valitron\Validator', function ($data, $fields = [], $lang = null, $langDir = null) {
             return new Validator($data, $fields, $lang, $langDir);
         });
     }
@@ -45,9 +45,8 @@ class ValitronProvider extends ServiceProvider\AbstractServiceProvider
             if (!isset($config['locale']) && isset($di->get('config')['locale'])) {
                 $config['locale'] = $di->get('config')['locale'];
             }
-            return $config+$this->defaultConfig;
+            return $config + $this->defaultConfig;
         }
         return $this->defaultConfig;
     }
-
 }

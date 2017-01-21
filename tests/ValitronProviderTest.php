@@ -15,12 +15,16 @@ class ValitronProviderTest extends \PHPUnit_Framework_TestCase
         $container->add('config', [
             'valitron' => [
                 'locale' => 'fr',
-                'locales_dir' => __DIR__.'/langs',
+                'locales_dir' => __DIR__ . '/langs',
                 'rules' => [
-                    ['custom', function() use (&$called) {
-                        $called = true;
-                        return true;
-                    }, 'Everything you do is wrong. You fail.']
+                    [
+                        'custom',
+                        function () use (&$called) {
+                            $called = true;
+                            return true;
+                        },
+                        'Everything you do is wrong. You fail.'
+                    ]
                 ]
             ]
 
@@ -30,8 +34,7 @@ class ValitronProviderTest extends \PHPUnit_Framework_TestCase
         $validator->rule('custom', 'test');
         $validator->validate();
         $this->assertTrue($validator->lang() === 'fr');
-        $this->assertTrue($validator->langDir() === __DIR__.'/langs');
+        $this->assertTrue($validator->langDir() === __DIR__ . '/langs');
         $this->assertTrue($called);
     }
-
 }
